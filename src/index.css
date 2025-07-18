@@ -1,0 +1,300 @@
+/* ==========================
+   Reset y estilos base
+   ========================== */
+   * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9fafb;
+    color: #333;
+  }
+  #root {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* ==========================
+     Sidebar
+     ========================== */
+  aside {
+    width: 220px;
+    background-color: #1f2937; /* gris oscuro */
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex-shrink: 0;
+  }
+  aside h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-align: center;
+    user-select: none;
+  }
+  aside nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  aside nav a {
+    text-decoration: none;
+    color: #d1d5db; /* gris claro */
+    font-weight: 600;
+    padding: 10px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  aside nav a.active,
+  aside nav a:hover {
+    background-color: #2563eb; /* azul */
+    color: white;
+  }
+  
+  /* ==========================
+     Main content
+     ========================== */
+  main {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #fff;
+    overflow-y: auto;
+  }
+  
+  /* ==========================
+     Dashboard específico
+     ========================== */
+  .dashboard-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    user-select: none;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .card {
+    background-color: #2563eb; /* azul */
+    color: white;
+    padding: 1.2rem 1rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 6px 12px rgb(37 99 235 / 0.4);
+    text-decoration: none;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  .card:hover {
+    background-color: #1e40af; /* azul más oscuro */
+  }
+  .card h2 {
+    margin: 0 0 0.4rem;
+    font-size: 1.25rem;
+  }
+  .card p {
+    margin: 0;
+    font-weight: 500;
+    opacity: 0.85;
+  }
+  .recent-box {
+    background-color: #f3f4f6;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    user-select: none;
+  }
+  .recent-box h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+  .recent-box ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+  .recent-box li {
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+  }
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .chart-box {
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    user-select: none;
+  }
+  .chart-box h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  
+  /* ==========================
+     Formularios comunes (para todos los módulos)
+     ========================== */
+  .formulario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .formulario input[type="text"],
+  .formulario input[type="number"],
+  .formulario select {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    flex-grow: 1;
+    min-width: 150px;
+    transition: border-color 0.3s ease;
+  }
+  .formulario input[type="text"]:focus,
+  .formulario input[type="number"]:focus,
+  .formulario select:focus {
+    outline: none;
+    border-color: #2563eb;
+  }
+  .formulario button {
+    padding: 0.5rem 1rem;
+    background-color: #2563eb;
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-shrink: 0;
+  }
+  .formulario button:hover {
+    background-color: #1e40af;
+  }
+  
+  /* ==========================
+     Tablas estándar
+     ========================== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  table th,
+  table td {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    text-align: left;
+    vertical-align: middle;
+  }
+  table th {
+    background-color: #f5f5f5;
+  }
+  table tbody tr:hover {
+    background-color: #e5f0ff;
+  }
+  table tbody tr td button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+    transition: color 0.3s ease;
+  }
+  table tbody tr td button:hover {
+    color: #2563eb;
+  }
+  
+  /* ==========================
+     Alertas y estados visuales
+     ========================== */
+  tr[style*="background-color: #ffe5e5"] td {
+    color: #b91c1c; /* rojo para stock bajo */
+  }
+  .stock-bajo {
+    color: #b91c1c;
+    font-weight: 700;
+    margin-left: 0.4rem;
+  }
+  
+  /* ==========================
+     Módulo Despachos - tabla y botones
+     ========================== */
+  .page-container h2 {
+    margin-bottom: 1.5rem;
+  }
+  .page-container button {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .page-container button:hover {
+    color: #2563eb;
+  }
+  
+  /* ==========================
+     Listas y detalles en Pedidos y Ventas
+     ========================== */
+  ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  ul li {
+    margin-bottom: 0.25rem;
+  }
+  
+  /* ==========================
+     Mensajes de tabla vacía
+     ========================== */
+  .no-data {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 1rem 0;
+  }
+  
+  /* ==========================
+     Responsive
+     ========================== */
+  @media (max-width: 900px) {
+    #root {
+      flex-direction: column;
+    }
+    aside {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-around;
+      padding: 12px 0;
+      font-size: 0.9rem;
+    }
+    aside nav {
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+    main {
+      padding: 15px 10px;
+    }
+    .charts-grid {
+      grid-template-columns: 1fr;
+    }
+    .formulario {
+      flex-direction: column;
+    }
+    table {
+      font-size: 0.9rem;
+    }
+  }
+  
