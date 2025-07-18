@@ -13,33 +13,6 @@ import Pedidos from './components/Pedidos';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 
-
-function Inicio() {
-  return <h2>🏠 Bienvenido al Panel de Administración</h2>;
-}
-function Clientes() {
-  return <h2>👥 Página Clientes</h2>;
-}
-function Ventas() {
-  return <h2>💰 Página Ventas</h2>;
-}
-function Pedidos() {
-  return <h2>🧾 Página Pedidos</h2>;
-}
-function Inventario() {
-  return <h2>📦 Página Inventario</h2>;
-}
-function Productos() {
-  return <h2>🛍️ Página Productos</h2>;
-}
-function Despachos() {
-  return <h2>🚚 Página Despachos</h2>;
-}
-function Descuentos() {
-  return <h2>🏷️ Página Descuentos</h2>;
-}
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
