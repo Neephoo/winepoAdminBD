@@ -1,154 +1,125 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 import db from "../firebase";
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
-  const [form, setForm] = useState({ nombre: '', precio: '', stock: '' });
-  const [modoEdicion, setModoEdicion] = useState(false);
-  const [productoEditarId, setProductoEditarId] = useState(null);
+  const [nuevoProducto, setNuevoProducto] = useState({
+    nombre: "",
+    precio: "",
+  });
+  const [editandoId, setEditandoId] = useState(null);
 
   const productosRef = collection(db, "productos");
 
-  // Cargar productos desde Firestore
   const cargarProductos = async () => {
-    try {
-      const snapshot = await getDocs(productosRef);
-      const lista = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setProductos(lista);
-    } catch (error) {
-      console.error("Error cargando productos:", error);
-    }
+    const snapshot = await getDocs(productosRef);
+    const lista = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setProductos(lista);
+  };
+
+  const agregarProducto = async () => {
+    if (!nuevoProducto.nombre || !nuevoProducto.precio) return;
+
+    await addDoc(productosRef, {
+      nombre: nuevoProducto.nombre,
+      precio: parseFloat(nuevoProducto.precio),
+      creadoEn: new Date(),
+    });
+
+    setNuevoProducto({ nombre: "", precio: "" });
+    cargarProductos();
+  };
+
+  const actualizarProducto = async (id) => {
+    const docRef = doc(db, "productos", id);
+    await updateDoc(docRef, {
+      nombre: nuevoProducto.nombre,
+      precio: parseFloat(nuevoProducto.precio),
+    });
+
+    setNuevoProducto({ nombre: "", precio: "" });
+    setEditandoId(null);
+    cargarProductos();
+  };
+
+  const eliminarProducto = async (id) => {
+    const docRef = doc(db, "productos", id);
+    await deleteDoc(docRef);
+    cargarProductos();
+  };
+
+  const comenzarEdicion = (producto) => {
+    setEditandoId(producto.id);
+    setNuevoProducto({
+      nombre: producto.nombre,
+      precio: producto.precio,
+    });
   };
 
   useEffect(() => {
     cargarProductos();
   }, []);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleAgregar = async (e) => {
-    e.preventDefault();
-    if (!form.nombre || !form.precio || !form.stock) return;
-
-    const nuevoProducto = {
-      nombre: form.nombre,
-      precio: parseInt(form.precio),
-      stock: parseInt(form.stock)
-    };
-
-    try {
-      await addDoc(productosRef, nuevoProducto);
-      setForm({ nombre: '', precio: '', stock: '' });
-      cargarProductos();
-    } catch (error) {
-      console.error("Error agregando producto:", error);
-    }
-  };
-
-  const handleEditar = (producto) => {
-    setModoEdicion(true);
-    setProductoEditarId(producto.id);
-    setForm({ nombre: producto.nombre, precio: producto.precio, stock: producto.stock });
-  };
-
-  const handleActualizar = async (e) => {
-    e.preventDefault();
-    if (!productoEditarId) return;
-
-    const docRef = doc(db, "productos", productoEditarId);
-
-    try {
-      await updateDoc(docRef, {
-        nombre: form.nombre,
-        precio: parseInt(form.precio),
-        stock: parseInt(form.stock)
-      });
-      setModoEdicion(false);
-      setProductoEditarId(null);
-      setForm({ nombre: '', precio: '', stock: '' });
-      cargarProductos();
-    } catch (error) {
-      console.error("Error actualizando producto:", error);
-    }
-  };
-
-  const handleEliminar = async (id) => {
-    const confirmar = window.confirm('¿Estás seguro de eliminar este producto?');
-    if (!confirmar) return;
-
-    try {
-      const docRef = doc(db, "productos", id);
-      await deleteDoc(docRef);
-      cargarProductos();
-    } catch (error) {
-      console.error("Error eliminando producto:", error);
-    }
-  };
-
   return (
-    <div className="page-container">
-      <h2>🛍️ Gestión de Productos</h2>
+    <div>
+      <h1>Gestión de Productos</h1>
 
-      <form onSubmit={modoEdicion ? handleActualizar : handleAgregar} className="formulario">
+      <div className="formulario">
         <input
           type="text"
-          name="nombre"
           placeholder="Nombre del producto"
-          value={form.nombre}
-          onChange={handleChange}
-          required
+          value={nuevoProducto.nombre}
+          onChange={(e) =>
+            setNuevoProducto({ ...nuevoProducto, nombre: e.target.value })
+          }
         />
         <input
           type="number"
-          name="precio"
           placeholder="Precio"
-          value={form.precio}
-          onChange={handleChange}
-          required
+          value={nuevoProducto.precio}
+          onChange={(e) =>
+            setNuevoProducto({ ...nuevoProducto, precio: e.target.value })
+          }
         />
-        <input
-          type="number"
-          name="stock"
-          placeholder="Stock"
-          value={form.stock}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">{modoEdicion ? 'Actualizar' : 'Agregar'}</button>
-      </form>
+        {editandoId ? (
+          <button onClick={() => actualizarProducto(editandoId)}>
+            Actualizar
+          </button>
+        ) : (
+          <button onClick={agregarProducto}>Agregar</button>
+        )}
+      </div>
 
-      <table>
+      <table className="tabla">
         <thead>
           <tr>
             <th>Nombre</th>
-            <th>Precio ($)</th>
-            <th>Stock</th>
+            <th>Precio</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {productos.map(p => (
-            <tr key={p.id}>
-              <td>{p.nombre}</td>
-              <td>{p.precio.toLocaleString()}</td>
-              <td>{p.stock}</td>
+          {productos.map((prod) => (
+            <tr key={prod.id}>
+              <td>{prod.nombre}</td>
+              <td>${prod.precio}</td>
               <td>
-                <button onClick={() => handleEditar(p)}>✏️</button>
-                <button onClick={() => handleEliminar(p.id)}>🗑️</button>
+                <button onClick={() => comenzarEdicion(prod)}>Editar</button>
+                <button onClick={() => eliminarProducto(prod.id)}>Eliminar</button>
               </td>
             </tr>
           ))}
-          {productos.length === 0 && (
-            <tr>
-              <td colSpan="4" style={{ textAlign: 'center' }}>No hay productos registrados.</td>
-            </tr>
-          )}
         </tbody>
       </table>
     </div>
