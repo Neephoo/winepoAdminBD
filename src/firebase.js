@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyB9QuZgYzQSaxR5leRt7uzk_vCkSvcLI7A",
   authDomain: "winepo-admin-d8165.firebaseapp.com",
   projectId: "winepo-admin-d8165",
-  storageBucket: "winepo-admin-d8165.firebasestorage.app",
+  storageBucket: "winepo-admin-d8165.appspot.com",
   messagingSenderId: "900480545316",
   appId: "1:900480545316:web:28842f2c1bc5fdc4819eb1"
 };
